@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       >
+    <!--注意上面的default-autowire="byType"  根据type进行自动注入-->
+    <bean id="ab" abstract="true" ></bean>
+
+    <bean id="xxx" class="com.InterService" parent="ab"></bean>
+
+</beans>

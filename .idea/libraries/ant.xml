@@ -1,0 +1,28 @@
+<component name="libraryTable">
+  <library name="ant">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/netty/lib/ant.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/bcel.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/hamcrest-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/jboss-marshalling-1.3.0.CR9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/jboss-marshalling-serial-1.3.0.CR9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/jibx-bind.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/jibx-extras.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/jibx-run.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/jibx-schema.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/jibx-tools.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/joda-time.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/log4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/netty-all-5.0.0.Alpha1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/protobuf-java-2.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/qdox.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/stax-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/wstx-asl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/netty/lib/xpp3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/netty/lib/hamcrest-core.jar!/" />
+    </SOURCES>
+  </library>
+</component>

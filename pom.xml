@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>alibaba_p6</groupId>
+    <artifactId>alibaba_p6</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>jvm</module>
+        <module>netty</module>
+        <module>序列化</module>
+        <module>RPC</module>
+        <module>kafka</module>
+        <module>spring</module>
+        <module>设计模式</module>
+        <module>java8</module>
+        <module>influxdb</module>
+    </modules>
+
+
+</project>
