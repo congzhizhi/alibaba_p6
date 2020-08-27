@@ -20,6 +20,7 @@ public class ChatClient implements  Runnable{
         try {
             //得到一个网络通道
             socketChannel=SocketChannel.open();
+            //打开一个选择器
             selector=Selector.open();
             //设置非阻塞式
             socketChannel.configureBlocking(false);
@@ -35,11 +36,14 @@ public class ChatClient implements  Runnable{
         InetSocketAddress inetSocketAddress=new InetSocketAddress("127.0.0.1",9090);
         //连接服务器端
         try {
+            //连接服务器，如果成功了
             if(socketChannel.connect(inetSocketAddress)){
+                //注册读事件
                 socketChannel.register(selector,SelectionKey.OP_READ);
                 //写数据
                 writeData(socketChannel);
             }else{
+                //注册连接事件
                 socketChannel.register(selector, SelectionKey.OP_CONNECT);//如果连接不上
             }
         } catch (IOException e) {
@@ -53,13 +57,16 @@ public class ChatClient implements  Runnable{
             public void run() {
                 try {
                     while (true){
+                        //等待你的输入
                         Scanner scanner=new Scanner(System.in);
                         String str = scanner.nextLine();
                         if(str.equals("by")){
                             socketChannel.close();
                             return;
                         }
+                        //将你的输入包装成缓冲区
                         ByteBuffer byteBuffer=ByteBuffer.wrap((socketChannel.getLocalAddress().toString()+"说："+str).getBytes());
+                        //发送你的数据
                         socketChannel.write(byteBuffer);
                     }
                 }catch (Exception e){
@@ -69,6 +76,7 @@ public class ChatClient implements  Runnable{
         }).start();
     }
 
+    //读数据
     public void readData() throws IOException {
         ByteBuffer byteBuffer=ByteBuffer.allocate(1024);
         int read = socketChannel.read(byteBuffer);

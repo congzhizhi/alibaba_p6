@@ -17,7 +17,7 @@ public class TestClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         for (int i=0;i<10;i++){
-            ctx.writeAndFlush("来自客户端的问候");
+            ctx.writeAndFlush("来自客户端adfasdfasdafs的问候");
         }
     }
 

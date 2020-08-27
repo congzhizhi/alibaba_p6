@@ -16,16 +16,16 @@
         public TCPHandler(SelectionKey sk, SocketChannel sc) {  
             this.sk = sk;  
             this.sc = sc;  
-            state = 0; // 初始狀態設定為READING  
+            state = 0; // 初始狀態設定為READING ，第一次肯定是先读客户端数据
         }  
       
         @Override  
         public void run() {  
             try {  
                 if (state == 0)  
-                    read(); // 讀取網絡數據  
+                    read(); // 读取数据
                 else  
-                    send(); // 發送網絡數據  
+                    send(); // 发送
       
             } catch (IOException e) {  
                 System.out.println("[Warning!] A client has been closed.");  
@@ -33,18 +33,10 @@
             }  
         }  
           
-        private void closeChannel() {  
-            try {  
-                sk.cancel();  
-                sc.close();  
-            } catch (IOException e1) {  
-                e1.printStackTrace();  
-            }  
-        }  
+
       
         private synchronized void read() throws IOException {  
-            // non-blocking下不可用Readers，因為Readers不支援non-blocking  
-            byte[] arr = new byte[1024];  
+            byte[] arr = new byte[1024];
             ByteBuffer buf = ByteBuffer.wrap(arr);  
               
             int numBytes = sc.read(buf); // 讀取字符串  
@@ -54,12 +46,15 @@
                 closeChannel();  
                 return;  
             }  
-            String str = new String(arr); // 將讀取到的byte內容轉為字符串型態  
-            if ((str != null) && !str.equals(" ")) {  
-                process(str); // 邏輯處理
+            String str = new String(arr); // 將读取到的byte內容转换字符串
+            if ((str != null) && !str.equals(" ")) {
+                //处理数据
+                process(str); //
                 System.out.println(sc.socket().getRemoteSocketAddress().toString()  
-                        + " > " + str);  
-                state = 1; // 改變狀態  
+                        + " > " + str);
+                //在这个通道读完了后，下一步往这个通道写数据
+                //改成写状态
+                state = 1;
                 sk.interestOps(SelectionKey.OP_WRITE); // 通過key改變通道註冊的事件  
                 sk.selector().wakeup(); // 使一個阻塞住的selector操作立即返回  
             }  
@@ -85,9 +80,20 @@
             // do process(decode, logically process, encode)..
             // ..
             try {
+                //等待6秒，模拟数据处理
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }  
+        }
+
+        //关闭通道
+        private void closeChannel() {
+            try {
+                sk.cancel();
+                sc.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }  

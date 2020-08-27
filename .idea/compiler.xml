@@ -8,19 +8,25 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="jvm" />
-        <module name="influxdb" />
-        <module name="rpc-client" />
         <module name="rpcclient" />
-        <module name="rpc-server-api" />
-        <module name="rpcserverapi" />
+        <module name="influxdb" />
+        <module name="redis" />
         <module name="序列化" />
+        <module name="rpc-server-api" />
+        <module name="jvm" />
+        <module name="kafka" />
         <module name="netty" />
         <module name="rpcserverprovider" />
+        <module name="netty_game_mashibing" />
+        <module name="rpcserverapi" />
+        <module name="坦克大战" />
         <module name="spring" />
+        <module name="rpc-client" />
+        <module name="异步编程简单案例" />
+        <module name="netty_zhanglong" />
         <module name="java8" />
         <module name="rpc-server-provider" />
-        <module name="kafka" />
+        <module name="反射终极实战" />
         <module name="设计模式" />
       </profile>
     </annotationProcessing>

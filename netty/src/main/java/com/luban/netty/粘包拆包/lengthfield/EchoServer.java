@@ -35,6 +35,7 @@ public class EchoServer {
 			protected void initChannel(SocketChannel ch) throws Exception {
 				// TODO Auto-generated method stub
 				ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(65535,2,4,0,2));
+				ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(65535,3,2,0,2));
 				ch.pipeline().addLast(new EchoServerHandler());
 			}
 

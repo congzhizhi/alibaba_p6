@@ -18,6 +18,12 @@
         <module>设计模式</module>
         <module>java8</module>
         <module>influxdb</module>
+        <module>redis</module>
+        <module>netty_zhanglong</module>
+        <module>netty_game_mashibing</module>
+        <module>反射终极实战</module>
+        <module>坦克大战</module>
+        <module>异步编程简单案例</module>
     </modules>
 
 

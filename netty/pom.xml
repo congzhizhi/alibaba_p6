@@ -21,6 +21,16 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>
+                        **/*.properties
+                    </include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
     <dependencies>
@@ -35,6 +45,11 @@
             <groupId>org.jboss.marshalling</groupId>
             <artifactId>jboss-marshalling-serial</artifactId>
             <version>2.0.2.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.29</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

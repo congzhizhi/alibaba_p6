@@ -19,16 +19,19 @@
           
         @Override  
         public void run() {  
-            try {  
-                SocketChannel sc= ssc.accept(); // 接受client連線請求  
+            try {
+                // 接受client连接请求
+                SocketChannel sc= ssc.accept();
                 System.out.println(sc.socket().getRemoteSocketAddress().toString() + " is connected.");  
                   
                 if(sc!=null) {  
-                    sc.configureBlocking(false); // 設置為非阻塞  
+                    sc.configureBlocking(false); // 設置為非阻塞
+                    //注册读事件
                     SelectionKey sk = sc.register(selector, SelectionKey.OP_READ); // SocketChannel向selector註冊一個OP_READ事件，然後返回該通道的key  
 //                    System.out.println(sk.selector()==selector);
                     selector.wakeup(); // 使一個阻塞住的selector操作立即返回
-                    sk.attach(new TCPHandler(sk, sc)); // 給定key一個附加的TCPHandler對象
+                    // 将读事件交给TCPHandler进行处理
+                    sk.attach(new TCPHandler(sk, sc));
                 }  
                   
             } catch (IOException e) {  

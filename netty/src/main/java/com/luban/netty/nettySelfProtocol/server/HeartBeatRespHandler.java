@@ -49,11 +49,11 @@ public class HeartBeatRespHandler  extends SimpleChannelInboundHandler<Object> {
     }
 
     private NettyMessage buildHeatBeat() {
-	NettyMessage message = new NettyMessage();
-	Header header = new Header();
-	header.setType(MessageType.HEARTBEAT_RESP.value());
-	message.setHeader(header);
-	return message;
+		NettyMessage message = new NettyMessage();
+		Header header = new Header();
+		header.setType(MessageType.HEARTBEAT_RESP.value());
+		message.setHeader(header);
+		return message;
     }
 
 }

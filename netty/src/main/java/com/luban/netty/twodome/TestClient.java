@@ -14,7 +14,7 @@ public class TestClient {
             bootstrap.group(bossGroup)
                     .channel(NioSocketChannel.class)
                     .handler(new TestClientInitializer());
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",8989).sync();
+            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",8080).sync();
             channelFuture.channel().closeFuture().sync();
         }catch (Exception e){
             e.printStackTrace();
