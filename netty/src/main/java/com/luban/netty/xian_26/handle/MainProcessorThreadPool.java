@@ -133,7 +133,7 @@ class FrameDiscardPolicy implements RejectedExecutionHandler {
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
         if (!e.isShutdown()) {
-            System.out.println("_____________________________________决绝策略生效_____________________________________________");
+            System.out.println("___________________________________警告：拒决绝策略生效！____________________________________________");
             e.getQueue().put(r);
         }
     }

@@ -24,6 +24,7 @@
         <module>反射终极实战</module>
         <module>坦克大战</module>
         <module>异步编程简单案例</module>
+        <module>netty_26</module>
     </modules>
 
 

@@ -30,14 +30,26 @@ public class Server {
 		.option(ChannelOption.SO_BACKLOG, 100)
 		.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
 				/**
-				 * 设置接收缓冲区大小啊啊
+				 * 设置接收缓冲区大小，320M
 				 */
-		.childOption(ChannelOption.SO_RCVBUF, 83886080*2*4*2)
+		.childOption(ChannelOption.SO_RCVBUF, 83886080<<2)
 				/**
-				 * 设置接收缓冲池总共大小
+				 * 设置接收ByteBuf缓冲池大小,默认8M，通过参数14设置为134M
 				 */
-		.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+//		.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+		.childOption(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(true,
+																	PooledByteBufAllocator.defaultNumHeapArena(),
+																	PooledByteBufAllocator.defaultNumDirectArena(),
+																	PooledByteBufAllocator.defaultPageSize(),
+																	14))
+		/**
+		 * 从缓冲池一次拿65KB的内存块
+		 */
 		.childOption(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(65536))
+		/**
+		 * 从缓冲池一次拿的快数自动扩容收缩
+		 */
+//		.childOption(ChannelOption.RCVBUF_ALLOCATOR, new AdaptiveRecvByteBufAllocator())
 
 		.handler(new LoggingHandler(LogLevel.INFO))
 		.childHandler(new ChannelInitializer<SocketChannel>() {
