@@ -16,7 +16,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Test  {
     public static void main(String[] args) {
-        PooledByteBufAllocator pooledByteBufAllocator = new PooledByteBufAllocator(true,PooledByteBufAllocator.defaultNumHeapArena(),PooledByteBufAllocator.defaultNumDirectArena(),PooledByteBufAllocator.defaultPageSize(),14);
+        //268M的缓冲池
+        PooledByteBufAllocator pooledByteBufAllocator = new PooledByteBufAllocator(true,PooledByteBufAllocator.defaultNumHeapArena(),PooledByteBufAllocator.defaultNumDirectArena()
+                ,65536,12);
+//        PooledByteBufAllocator pooledByteBufAllocator =  PooledByteBufAllocator.DEFAULT;
         ByteBuf byteBuf = pooledByteBufAllocator.buffer();
         ByteBuf byteBuf2 = pooledByteBufAllocator.buffer(26444216);
         ByteBuf byteBuf3 = pooledByteBufAllocator.buffer(26444216);

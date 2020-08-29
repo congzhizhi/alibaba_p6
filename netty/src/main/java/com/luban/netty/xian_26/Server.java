@@ -34,14 +34,18 @@ public class Server {
 				 */
 		.childOption(ChannelOption.SO_RCVBUF, 83886080<<2)
 				/**
-				 * 设置接收ByteBuf缓冲池大小,默认8M，通过参数14设置为134M
+				 * 设置接收ByteBuf缓冲池大小,默认8M，通过参数14设置为268M
+				 * pagesize页大小默认8K，这里设置65K，
+				 * Page= 268435456/2048=131072，subpage=131072/2=65536
+				 * 所有缓存池里有4096个subpage，也就是说缓存池一下能拿出4096个帧
+				 * 如果想提高一倍，则可以将65546这个参数乘以2
 				 */
 //		.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
 		.childOption(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(true,
 																	PooledByteBufAllocator.defaultNumHeapArena(),
 																	PooledByteBufAllocator.defaultNumDirectArena(),
-																	PooledByteBufAllocator.defaultPageSize(),
-																	14))
+																	65536,
+																	12))
 		/**
 		 * 从缓冲池一次拿65KB的内存块
 		 */
