@@ -10,7 +10,7 @@ public interface IFrameProcessor {
     /**
      * 帧处理接口
      */
-    public void handle(ByteBuf frame);
+    public void handle(ByteBuf frame) ;
 
     /**
      * 获取帧类型

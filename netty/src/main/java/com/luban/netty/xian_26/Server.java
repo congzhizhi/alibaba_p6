@@ -62,7 +62,7 @@ public class Server {
 			protected void initChannel(SocketChannel ch) throws Exception {
 				// TODO Auto-generated method stub
 				//针对客户端，如果1分钟之内没有向服务器发送读写心跳，则主动断开
-				ch.pipeline().addLast(new IdleStateHandler(5,5,5));
+				ch.pipeline().addLast(new IdleStateHandler(35,35,35));
 				ch.pipeline().addLast(new HeartBeatHandler());
 				ch.pipeline().addLast(new FrameAcceptHandler());
 				ch.pipeline().addLast(new FrameAnalyseHandler());

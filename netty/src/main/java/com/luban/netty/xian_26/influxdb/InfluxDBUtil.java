@@ -2,6 +2,8 @@ package com.luban.netty.xian_26.influxdb;
 
 
 import com.luban.netty.xian_26.accept.FrameAcceptHandler;
+import com.luban.netty.xian_26.influxdb.pool2.InfluxDBPool;
+import okhttp3.OkHttpClient;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.InfluxDBIOException;
@@ -11,10 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class InfluxDBUtil {
@@ -50,7 +49,7 @@ public class InfluxDBUtil {
 
      {
         connect();
-    }
+     }
 
     /**
      * 连接数据库
@@ -61,6 +60,7 @@ public class InfluxDBUtil {
         //如果InfluxDB关闭，发请求时会报InfluxDBIOException异常
         //此时，不需要重连，influxDB启动后，发送的请求会自动链接
         influxDB = InfluxDBFactory.connect(url);
+        influxDB.enableBatch(2000,20010,TimeUnit.MILLISECONDS);
         influxDB.setDatabase(db);
         if (!isConnected()) {
             LOGGER.error("启动链接 [influxdb:" + db + "] 失败");
@@ -123,7 +123,10 @@ public class InfluxDBUtil {
      * @return
      */
     public  BatchPoints pointsBuilder(List<Point> points) {
-        BatchPoints batchPoints = BatchPoints.database(db).build();
+        BatchPoints batchPoints =
+                BatchPoints.database(db)
+                .consistency(InfluxDB.ConsistencyLevel.ALL)
+                .build();
 
         for (int i = 0; i < points.size(); i++) {
             batchPoints.point(points.get(i));
@@ -147,10 +150,10 @@ public class InfluxDBUtil {
      * @param batchPoints
      */
     public  void insert(BatchPoints batchPoints) {
-        List<String> records = new ArrayList<String>();
-        records.add(batchPoints.lineProtocol());
-//        influxDB.write(batchPoints);
-        influxDB.write(records);
+        influxDB.write(batchPoints);
+//        List<String> records = new ArrayList<String>();
+//        records.add(batchPoints.lineProtocol());
+//        influxDB.write(records);
 
 
         // influxDB.enableGzip();
@@ -281,18 +284,20 @@ public class InfluxDBUtil {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        InfluxDBPool.getConnection();
 
-
-        InfluxDBUtil influxDB1 = new InfluxDBUtil();
-        InfluxDBUtil influxDB2 = new InfluxDBUtil();
-        InfluxDBUtil influxDB3 = new InfluxDBUtil();
-        InfluxDBUtil influxDB4 = new InfluxDBUtil();
-        InfluxDBUtil influxDB5 = new InfluxDBUtil();
+//        InfluxDBUtil influxDB = new InfluxDBUtil();
+//        InfluxDBUtil influxDB1 = new InfluxDBUtil();
+//        InfluxDBUtil influxDB2 =new InfluxDBUtil();
+//        InfluxDBUtil influxDB3 = new InfluxDBUtil();
+//        InfluxDBUtil influxDB4 = new InfluxDBUtil();
+//        InfluxDBUtil influxDB5 = new InfluxDBUtil();
         InfluxDBUtil influxDB6 = new InfluxDBUtil();
+            Long startTime = System.currentTimeMillis();
         //测试多条记录,时间为纳秒
         // 放在要检测的代码段前，取开始前的时间戳
-        Long startTime = System.currentTimeMillis();
+
 
         try {
 //            deleteDB("test");
@@ -306,8 +311,13 @@ public class InfluxDBUtil {
 //            insert(pointBuilder("frame",0,tags,field));
 
 
-            Thread thread1 =  new Thread(() -> {
-
+         /*   Thread thread1 =  new Thread(() -> {
+//                InfluxDBUtil influxDB1 = null;
+//                try {
+//                    influxDB1 = InfluxDBPool.getConnection();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 List<Point> points5 = new ArrayList<>();
                 for (int i = 0; i < 10000; i++) {
                     points5.add(influxDB1.pointBuilder("frame", 1198850751188689709L + i, tags, field));
@@ -316,62 +326,113 @@ public class InfluxDBUtil {
             });
 
             Thread thread2 = new Thread(() -> {
-
+//                InfluxDBUtil influxDB2 = null;
+//                try {
+//                    influxDB2 = InfluxDBPool.getConnection();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 List<Point> points6 = new ArrayList<>();
-                for (int i = 0; i < 10000; i++) {
+                for (int i = 0; i < 1000; i++) {
                     points6.add(influxDB2.pointBuilder("frame", 1298850751188689709L + i, tags, field));
                 }
                 influxDB2.insert(influxDB2.pointsBuilder(points6));
             });
             Thread thread3 =  new Thread(() -> {
-
+//                InfluxDBUtil influxDB3 = null;
+//                try {
+//                    influxDB3 = InfluxDBPool.getConnection();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 List<Point> points7 = new ArrayList<>();
-                for (int i = 0; i < 10000; i++) {
+                for (int i = 0; i < 1000; i++) {
                     points7.add(influxDB3.pointBuilder("frame", 1398850751188689709L + i, tags, field));
                 }
                 influxDB3.insert(influxDB3.pointsBuilder(points7));
             });
 
             Thread thread4 = new Thread(() -> {
-
+//                InfluxDBUtil influxDB4 = null;
+//                try {
+//                    influxDB4 = InfluxDBPool.getConnection();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 List<Point> points1 = new ArrayList<>();
-                for (int i = 0; i < 10000; i++) {
+                for (int i = 0; i < 1000; i++) {
                     points1.add(influxDB4.pointBuilder("frame", 1698850751188689709L + i, tags, field));
                 }
                 influxDB4.insert(influxDB4.pointsBuilder(points1));
             });
 
             Thread thread5 =new Thread(() -> {
-
+//                InfluxDBUtil influxDB5 = null;
+//                try {
+//                    influxDB5 = InfluxDBPool.getConnection();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 List<Point> points2 = new ArrayList<>();
-                for (int i = 0; i < 10000; i++) {
+                for (int i = 0; i < 1000; i++) {
                     points2.add(influxDB5.pointBuilder("frame", 1798850751188689709L + i, tags, field));
                 }
                 influxDB5.insert(influxDB5.pointsBuilder(points2));
             });
-
+*/
             Thread thread6 = new Thread(() -> {
+//                InfluxDBUtil influxDB6 = null;
+//                try {
+//                    influxDB6 = InfluxDBPool.getConnection();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+
+                    Map<String, String> tag = new HashMap<>();
+                    Map<String, Object> fiel = new HashMap<String, Object>();
                 List<Point> points3 = new ArrayList<>();
-                for (int i = 0; i < 10000; i++) {
-                    points3.add(influxDB6.pointBuilder("frame", 198850751188689709L + i, tags, field));
+
+                for (int i = 0; i < 120000; i++) {
+                    tag.put("location", getRandomString(5)+ new Random().nextInt(10000));
+                    tag.put("address", getRandomString(13)+ new Random().nextInt(6000));
+                    tag.put("age", getRandomString(8)+ new Random().nextInt(10000));
+                    fiel.put("value", 13.5+i);
+
+                    points3.add(influxDB6.pointBuilder("frame", 198850751188689709L + i, tag, fiel));
+
                 }
+                long start = System.currentTimeMillis();
                 influxDB6.insert(influxDB6.pointsBuilder(points3));
+                long end = System.currentTimeMillis();
+                System.out.println(".......耗时:"+(end-start));
+                influxDB6.close();
+
+
+                long start2 = System.currentTimeMillis();
+                StringBuilder sb = new StringBuilder();
+                for (Point point : points3) {
+                    sb.append(point.lineProtocol(TimeUnit.NANOSECONDS)).append("\n");
+                }
+                 sb.toString();
+                long end2 = System.currentTimeMillis();
+                System.out.println(".......拼接耗时:"+(end2-start2));
+
             });
 
             //序列化
 //            System.out.println(pointsBuilder(points).lineProtocol());
-            thread1.start();
-            thread2.start();
-            thread3.start();
-            thread4.start();
-            thread5.start();
+//            thread1.start();
+//            thread2.start();
+//            thread3.start();
+//            thread4.start();
+//            thread5.start();
             thread6.start();
 
-            thread1.join();
-            thread2.join();
-            thread3.join();
-            thread4.join();
-            thread5.join();
+//            thread1.join();
+//            thread2.join();
+//            thread3.join();
+//            thread4.join();
+//            thread5.join();
             thread6.join();
 
         } catch (
@@ -397,4 +458,38 @@ public class InfluxDBUtil {
     }
 
 
+
+    public static void testInsert(){
+        InfluxDBUtil influxDB6 = new InfluxDBUtil();
+        Map<String, String> tag = new HashMap<>();
+        Map<String, Object> fiel = new HashMap<String, Object>();
+        List<Point> points3 = new ArrayList<>();
+
+        for (int i = 0; i < 1000; i++) {
+            tag.put("location", getRandomString(5)+ new Random().nextInt(10000));
+            tag.put("address", getRandomString(13)+ new Random().nextInt(6000));
+            tag.put("age", getRandomString(8)+ new Random().nextInt(10000));
+            fiel.put("value", 13.5+i);
+            points3.add(influxDB6.pointBuilder("frame", 198850751188689709L + i, tag, fiel));
+        }
+
+        long start = System.currentTimeMillis();
+        influxDB6.insert(influxDB6.pointsBuilder(points3));
+        long end = System.currentTimeMillis();
+        System.out.println(".......耗时:"+(end-start));
+        influxDB6.close();
+    }
+
+
+
+    public static String getRandomString(int length){
+        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random=new Random();
+        StringBuffer sb=new StringBuffer();
+        for(int i=0;i<length;i++){
+            int number=random.nextInt(62);
+            sb.append(str.charAt(number));
+        }
+        return sb.toString();
+    }
 }

@@ -79,11 +79,11 @@ public class FrameAnalyseHandler extends SimpleChannelInboundHandler<ByteBuf> {
             /**
              * 网卡IP
              */
-            work_param_frame.writeIntLE((int) ipToLong("192.168.0.129"));
+            work_param_frame.writeIntLE((int) ipToLong("192.168.0.224"));
             /**
              * 源IP
              */
-            work_param_frame.writeIntLE((int) ipToLong("192.168.0.129"));
+            work_param_frame.writeIntLE((int) ipToLong("192.168.0.224"));
             /**
              * 源端口
              */
@@ -135,11 +135,11 @@ public class FrameAnalyseHandler extends SimpleChannelInboundHandler<ByteBuf> {
             /**
              * 网卡IP
              */
-            work_param_frame2.writeIntLE((int) ipToLong("192.168.0.129"));
+            work_param_frame2.writeIntLE((int) ipToLong("192.168.0.224"));
             /**
              * 源IP
              */
-            work_param_frame2.writeIntLE((int) ipToLong("192.168.0.129"));
+            work_param_frame2.writeIntLE((int) ipToLong("192.168.0.224"));
             /**
              * 源端口
              */

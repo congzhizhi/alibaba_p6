@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author:congzhizhi
@@ -50,7 +51,6 @@ public class FrameAcceptHandler extends ByteToMessageDecoder {
         this.tail=Unpooled.copiedBuffer(this.tailBytes);
         tailValue = this.tail.readUnsignedShortLE();
     }
-
 
     /**
      * 缓冲区解码
@@ -147,6 +147,7 @@ public class FrameAcceptHandler extends ByteToMessageDecoder {
                         /*
                          * 返回有效帧，交由帧解析程序
                          */
+
                         return frame;
                 }else{
                         /*
