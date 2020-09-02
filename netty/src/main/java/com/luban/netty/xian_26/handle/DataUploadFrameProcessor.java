@@ -29,7 +29,7 @@ public class DataUploadFrameProcessor implements IFrameProcessor {
     /**
      * 包数统计
      */
-    static AtomicLong packageSize = new AtomicLong(0);
+    volatile  static int packageSize = 0;
     public static AtomicLong framSize = new AtomicLong(0);
     /**
      * 帧个数统计
@@ -46,7 +46,7 @@ public class DataUploadFrameProcessor implements IFrameProcessor {
     static {
         new Thread(()->{
             while (true){
-                System.out.println("记录数:"+packageSize.get());
+                System.out.println("记录数:"+packageSize);
                 System.out.println("帧数:"+ framSize.get());
                 try {
                     Thread.sleep(1000);
@@ -57,6 +57,10 @@ public class DataUploadFrameProcessor implements IFrameProcessor {
         }).start();
     }
 
+
+    public synchronized  void add(int val){
+        packageSize += val;
+    }
     @Override
     public void handle(ByteBuf frame)  {
 
@@ -79,7 +83,7 @@ public class DataUploadFrameProcessor implements IFrameProcessor {
                framSize.getAndIncrement();
            }
             segment= frame.readUnsignedShortLE();
-            packageSize.getAndAdd(segment);
+           add(segment);
            int seglen = 0;
             for (int i = 0; i <segment ; i++) {
                 frame.skipBytes(8);

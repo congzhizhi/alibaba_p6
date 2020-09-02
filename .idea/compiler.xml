@@ -10,7 +10,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="rpcclient" />
         <module name="influxdb" />
-        <module name="算法" />
         <module name="redis" />
         <module name="序列化" />
         <module name="rpc-server-api" />
@@ -22,12 +21,13 @@
         <module name="rpcserverapi" />
         <module name="坦克大战" />
         <module name="spring" />
-        <module name="rpc-client" />
+        <module name="算法" />
         <module name="异步编程简单案例" />
         <module name="netty_zhanglong" />
         <module name="java8" />
         <module name="rpc-server-provider" />
         <module name="反射终极实战" />
+        <module name="rpc-client" />
         <module name="设计模式" />
       </profile>
     </annotationProcessing>
