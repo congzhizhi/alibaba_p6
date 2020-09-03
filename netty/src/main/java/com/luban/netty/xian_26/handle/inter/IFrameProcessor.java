@@ -1,4 +1,4 @@
-package com.luban.netty.xian_26.handle;
+package com.luban.netty.xian_26.handle.inter;
 
 import io.netty.buffer.ByteBuf;
 

@@ -1,19 +1,15 @@
 package com.luban.netty.xian_26.accept;
 
 
-import com.luban.netty.xian_26.handle.FrameTypeProcessorFactory;
-import com.luban.netty.xian_26.handle.MainProcessorThreadPool;
+import com.luban.netty.xian_26.handle.threadpool.MainProcessorThreadPool;
 import com.luban.netty.xian_26.model.ProxyClientGroup;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.AttributeKey;
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.InetAddress;
 
 public class FrameAnalyseHandler extends SimpleChannelInboundHandler<ByteBuf> {
     /**

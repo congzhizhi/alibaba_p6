@@ -1,9 +1,9 @@
 package com.luban.netty.xian_26.accept;
 
-import com.luban.netty.xian_26.handle.DataUploadFrameProcessor;
-import com.luban.netty.xian_26.handle.IFrameProcessor;
-import com.luban.netty.xian_26.handle.LogFrameProcessor;
-import com.luban.netty.xian_26.handle.WorkParamAckFrameProcessor;
+import com.luban.netty.xian_26.handle.impl.DataUploadFrameProcessor;
+import com.luban.netty.xian_26.handle.inter.IFrameProcessor;
+import com.luban.netty.xian_26.handle.impl.LogFrameProcessor;
+import com.luban.netty.xian_26.handle.impl.WorkParamAckFrameProcessor;
 
 import java.util.HashMap;
 import java.util.Map;

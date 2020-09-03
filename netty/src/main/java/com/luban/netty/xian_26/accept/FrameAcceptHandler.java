@@ -1,5 +1,6 @@
 package com.luban.netty.xian_26.accept;
 
+import com.luban.netty.xian_26.util.CONSTANT;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -21,11 +22,11 @@ public class FrameAcceptHandler extends ByteToMessageDecoder {
     /*
      * 帧头标识，默认0x0710
      */
-     byte[] headBytes;
+     byte[] headBytes = CONSTANT.headBytes;
     /*
      * 帧尾标识，默认0x7100
      */
-     byte[] tailBytes;
+     byte[] tailBytes = CONSTANT.headBytes;
      int tailValue ;
     /*
      * 构造netty的帧头缓冲区，用于帧搜索
@@ -40,13 +41,8 @@ public class FrameAcceptHandler extends ByteToMessageDecoder {
      */
     static private final Logger LOGGER = LoggerFactory.getLogger(FrameAcceptHandler.class);
 
-    public FrameAcceptHandler(){
-        this(new byte[]{0x10, 0x07}, new byte[]{0x00, 0x71});
-    }
 
-    public FrameAcceptHandler(byte[] head,byte[] tail){
-        this.headBytes= head;
-        this.tailBytes =  tail;
+    public FrameAcceptHandler(){
         this.head = Unpooled.copiedBuffer(this.headBytes);
         this.tail=Unpooled.copiedBuffer(this.tailBytes);
         tailValue = this.tail.readUnsignedShortLE();

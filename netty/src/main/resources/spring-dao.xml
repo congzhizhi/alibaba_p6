@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+    
+
+	 <!-- 要使用注解必须添加此项 -->  
+    <context:annotation-config />  
+   
+    <!-- 连接数据库，数据信息来自spring.xml配置文件中加载的jdbc.properties文件	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+ -->
+ 	<!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="maxPoolSize" value="${jdbc.maximum.connection.count}" />
+		<property name="minPoolSize" value="${jdbc.minimum.connection.count}" />
+		<property name="initialPoolSize" value="${jdbc.initial.poolSize}"/>
+		<property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+
+	</bean>-->
+	<!--<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+		<property name="alias" value="proxoolDataSource" />
+		<property name="driver" value="${jdbc.driver}" />
+		<property name="driverUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="maximumConnectionCount" value="${jdbc.maximum.connection.count}" />
+		<property name="minimumConnectionCount" value="${jdbc.minimum.connection.count}" />
+		<property name="statistics" value="${jdbc.statistics}" />
+		<property name="simultaneousBuildThrottle" value="${jdbc.simultaneous.build.throttle}" />
+<<<<<<< .mine
+	</bean>-->  
+	
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}"></property>
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
+        <property name="user" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="initialPoolSize" value="1"></property>
+		<!--<property name="testAfterUse" value="true"/>-->
+	</bean>
+	
+    <!-- 建立session工厂，并将数据源加载进来，同时配置hibernate相关参数信息。-->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+         p:mappingLocations="classpath:/bkccm/system/**/*.hbm.xml"
+        >
+		<property name="dataSource" ref="dataSource" />
+				<property name="packagesToScan" value="bkccm" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="current_session_context_class">thread</prop>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.autoReconnect">true</prop>
+				<prop key="hibernate.format_sql">true</prop> 
+				<prop key="hibernate.query.substitutions">${hibernate.query.substitutions}</prop>
+				<prop key="hibernate.default_batch_fetch_size">${hibernate.default_batch_fetch_size}</prop>
+				<prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
+				<prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
+				<prop key="hibernate.bytecode.use_reflection_optimizer">${hibernate.bytecode.use_reflection_optimizer}</prop>
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+				<prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+				<prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
+				<prop key="net.sf.ehcache.configurationResourceName">${net.sf.ehcache.configurationResourceName}</prop>
+				<prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+    
+    <!-- 设定transactionManager-->  
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />  
+     </bean>  
+  
+    <!--启动spring事务注解功能-->  
+    <tx:annotation-driven transaction-manager="transactionManager"/>  
+	
+	
+	
+<!-- 	  <bean id="geisslog" class="geiss.system.geisssystem.interceptor.GEISSLog"/>
+ 		<aop:config>
+        	<aop:aspect id="asp" ref="geisslog">
+        		<aop:pointcut id="mycut" expression="execution(public geiss.system.other.statute.service.impl.*.*(..))"/>
+        		<aop:before pointcut-ref="mycut" method="doAccessCheck"/>
+        		<aop:after-returning pointcut-ref="mycut" method="doAfterReturning"/>
+			  	<aop:after-throwing pointcut-ref="mycut" method="doAfterThrowing"/>
+			  	<aop:after pointcut-ref="mycut" method="doAfter"/>
+			  	<aop:around pointcut-ref="mycut" method="doBasicProfiling"/>
+        	</aop:aspect>
+        </aop:config> -->
+        
+        <!-- 
+       <bean id="geisslog" class="geiss.system.geisssystem.interceptor.GEISSLog"/>
+ 		<aop:config>
+        	<aop:aspect id="asp" ref="geisslog">
+        		<aop:pointcut id="mycut" expression="execution(* geiss.system..service.impl.*.*alterDevice(..))"/>
+        		<aop:before pointcut-ref="mycut" method="doAccessCheck"/>
+        		<aop:after-returning pointcut-ref="mycut" method="doAfterReturning"/>
+			  	<aop:after-throwing pointcut-ref="mycut" method="doAfterThrowing"/>
+			  	<aop:after pointcut-ref="mycut" method="doAfter"/>
+			  	<aop:around pointcut-ref="mycut" method="doBasicProfiling"/>
+        	</aop:aspect>
+        </aop:config>
+         -->
+</beans>
+ 
