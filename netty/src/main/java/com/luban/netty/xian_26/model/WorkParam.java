@@ -21,6 +21,11 @@ import lombok.Data;
 public class WorkParam {
 
     /**
+     * ID
+     */
+    private int id;
+
+    /**
      * 网卡IP,4字节
      */
     private  int ethIP;

@@ -1,7 +1,9 @@
 package com.luban.netty.xian_26.shentong.config;
 
+import com.luban.netty.xian_26.model.WorkParam;
 import com.luban.netty.xian_26.shentong.mapper.IUserDao;
 import com.luban.netty.xian_26.shentong.UserEntity;
+import com.luban.netty.xian_26.shentong.mapper.IWorkParamDao;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -41,6 +43,8 @@ public final class MySqlSessionFactory {
 
 
         List<UserEntity> userEntity= openSession().getMapper(IUserDao.class).get();
+        System.out.println();
+        List<WorkParam> getAll= openSession().getMapper(IWorkParamDao.class).getAllWorkParams();
         System.out.println();
     }
 

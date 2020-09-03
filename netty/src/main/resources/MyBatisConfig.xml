@@ -9,8 +9,8 @@
             <dataSource type="com.luban.netty.xian_26.shentong.config.c3p0DataSourceFactory">
                 <property name="driverClass" value="com.oscar.Driver"/>
                 <property name="jdbcUrl"  value="jdbc:oscar://192.168.0.224:2003/OSRDB?autoReconnect=true"/>
-                <property name="user" value="bkccm"/>
-                <property name="password" value="bkccm"/>
+                <property name="user" value="weidan"/>
+                <property name="password" value="weidan"/>
                 <property name="initialPoolSize" value="5"/>
                 <property name="maxPoolSize" value="20"/>
                 <property name="minPoolSize" value="5"/>
@@ -19,6 +19,7 @@
         </environment>
     </environments>
     <mappers>
-        <package name="com.luban.netty.xian_26.shentong.mapper"/>
+        <mapper resource="com/luban/netty/xian_26/shentong/mapper/xml/IUserDao.xml"/>
+        <mapper resource="com/luban/netty/xian_26/shentong/mapper/xml/IWorkParam.xml"/>
     </mappers>
 </configuration>
