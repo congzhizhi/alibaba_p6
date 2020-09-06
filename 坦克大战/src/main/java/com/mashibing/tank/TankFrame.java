@@ -7,14 +7,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
-    int x = 200, y = 200,SPEED=10;
+    Tank myTank = new Tank(200,200,10,this);
+    Bullet b = null;
+
+    private final  int GAME_WIDTH=800,GAME_HEIGHT=600;
     boolean bl = false;
     boolean bu = false;
     boolean br = false;
     boolean bd = false;
-    Dir dir = Dir.UP;
     public TankFrame() {
-        this.setSize(800, 600);
+        this.setSize(GAME_WIDTH, GAME_HEIGHT);
         this.setResizable(false);
         this.setTitle("坦克大战");
         this.setVisible(true);
@@ -24,41 +26,41 @@ public class TankFrame extends Frame {
                 System.exit(0);
             }
         });
-
         this.addKeyListener(new MyKeyListener());
-
 
     }
 
     public static void main(String[] args) throws InterruptedException {
         TankFrame tankFrame = new TankFrame();
         while (true) {
-            Thread.sleep(100);
+            Thread.sleep(50);
             tankFrame.repaint();
         }
     }
 
+    /**
+     * 解决闪烁问题
+     */
+    Image offScreenImage = null;
+    @Override
+    public void update(Graphics g) {
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
+        }
+        Graphics gOffScreen = offScreenImage.getGraphics();
+        Color c = gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        gOffScreen.setColor(c);
+        paint(gOffScreen);
+        g.drawImage(offScreenImage, 0, 0, null);
+    }
     @lombok.SneakyThrows
     @Override
     public void paint(Graphics g) {
-
-        g.fillRect(x, y, 50, 50);
-        switch (dir){
-            case  LEFT:
-                x-=SPEED;
-                break;
-            case RIGHT:
-                x+=SPEED;
-                break;
-            case UP:
-                y-=SPEED;
-                break;
-            case DOWN:
-                y+=SPEED;
-                break;
-            default:
-                    break;
-        }
+        myTank.paint(g);
+        if( b!= null)
+        b.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -70,19 +72,15 @@ public class TankFrame extends Frame {
             switch (key) {
                 case KeyEvent.VK_LEFT:
                     bl = true;
-                    x -= 10;
                     break;
                 case KeyEvent.VK_UP:
                     bu = true;
-                    y -= 10;
                     break;
                 case KeyEvent.VK_RIGHT:
                     br = true;
-                    x += 10;
                     break;
                 case KeyEvent.VK_DOWN:
                     bd = true;
-                    y += 10;
                     break;
                 default:
                     break;
@@ -98,19 +96,18 @@ public class TankFrame extends Frame {
             switch (key) {
                 case KeyEvent.VK_LEFT:
                     bl = false;
-                    x -= 10;
                     break;
                 case KeyEvent.VK_UP:
                     bu = false;
-                    y -= 10;
                     break;
                 case KeyEvent.VK_RIGHT:
                     br = false;
-                    x += 10;
                     break;
                 case KeyEvent.VK_DOWN:
                     bd = false;
-                    y += 10;
+                    break;
+                case KeyEvent.VK_SPACE:
+                    myTank.fire();
                     break;
                 default:
                     break;
@@ -118,12 +115,18 @@ public class TankFrame extends Frame {
             setMainTankDir();
         }
         private void setMainTankDir() {
-            if (bl) dir = Dir.LEFT;
-            if (br) dir = Dir.RIGHT;
-            if (bu) dir = Dir.UP;
-            if (bd) dir = Dir.DOWN;
+            if(!bl && !br && !bu && !bd ){
+                myTank.setMoving(false);
+            }else{
+                myTank.setMoving(true);
+            }
+            if (bl) { myTank.setDir(Dir.LEFT);}
+            if (br) { myTank.setDir(Dir.RIGHT);}
+            if (bu) { myTank.setDir(Dir.UP);}
+            if (bd) { myTank.setDir(Dir.DOWN);}
         }
     }
+
 
 
 

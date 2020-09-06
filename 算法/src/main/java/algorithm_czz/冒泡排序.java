@@ -5,6 +5,9 @@ import java.util.Arrays;
 public class 冒泡排序 {
 
     public static void main(String[] args) {
+        System.out.println((int)(Math.random()*10));
+        System.out.println((int)(Math.random()*10));
+        System.out.println((int)(Math.random()*10));
         int data[]={9,8,7,6,5,4,3,2,1};
 
         for (int i = data.length-1; i > 0 ; i--) {
