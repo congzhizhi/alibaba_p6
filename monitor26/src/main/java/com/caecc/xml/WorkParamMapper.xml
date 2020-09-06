@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.caecc.mapper.WorkParamMapper">
+
+    <resultMap id="workparamMap" type="WorkParam">
+        <id property="id" column="id" />
+        <result property="ethIP" column="eth_iP" />
+        <result property="srcIP" column="src_iP" />
+        <result property="srcPort" column="src_port" />
+        <result property="desIP" column="des_iP" />
+        <result property="desPort" column="des_port" />
+        <result property="protocol" column="protocol" />
+        <result property="mode" column="mode" />
+    </resultMap>
+
+
+    <select id="getAllWorkParams" resultMap="workparamMap">
+		select * from weidan.work_param
+	</select>
+
+    <select id="getWorkParamById" resultMap="workparamMap">
+		select * from weidan.work_param where id=#{id}
+	</select>
+
+    <select id="getByConditions" resultMap="workparamMap">
+		select * from weidan.work_param
+        <where>
+            <if test="ethIP != null">
+                and eth_iP = #{ethIP},
+            </if>
+            <if test="srcIP != null">
+                and src_iP = #{srcIP},
+            </if>
+            <if test="srcPort != null">
+                and src_port = #{srcPort},
+            </if>
+            <if test="desIP != null">
+                and des_iP = #{desIP},
+            </if>
+            <if test="desPort != null">
+                and des_port = #{desPort},
+            </if>
+            <if test="protocol != null">
+                and protocol = #{protocol},
+            </if>
+            <if test="mode != null">
+                and mode = #{mode},
+            </if>
+        </where>
+	</select>
+
+
+    <select id="getByIdList" resultMap="workparamMap">
+
+        select *
+        from weidan.work_param
+        where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        <selectKey keyColumn="id" resultType="long" keyProperty="id" order="BEFORE">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into weidan.work_param(
+            eth_iP,src_iP,src_port,des_iP,des_port,protocol,mode)
+        values (#(ethIP),#(srcIP),#(srcPort),#(desIP),#(desPort),#(protocol),#(mode))
+    </insert>
+
+
+
+    <update id="updateById">
+		update weidan.work_param
+        <set>
+            <if test="ethIP != null">
+                eth_iP = #{ethIP},
+            </if>
+            <if test="srcIP != null">
+                src_iP = #{srcIP},
+            </if>
+            <if test="srcPort != null">
+                src_port = #{srcPort},
+            </if>
+            <if test="desIP != null">
+                des_iP = #{desIP},
+            </if>
+            <if test="desPort != null">
+                des_port = #{desPort},
+            </if>
+            <if test="protocol != null">
+                protocol = #{protocol},
+            </if>
+            <if test="mode != null">
+                mode = #{mode},
+            </if>
+            id = #{id}
+        </set>
+        where id = #{id}
+	</update>
+
+
+
+    <delete id="deleteById">
+		delete from weidan.work_param where id = #{id}
+	</delete>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
